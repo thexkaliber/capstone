@@ -1,0 +1,73 @@
+seed_everything: 42
+trainer:
+  default_root_dir: "/workspace/astroclip/results/clip/"
+  enable_checkpointing: true
+  gradient_clip_val: 1.
+  max_epochs: 1
+  precision: "16-mixed"
+  devices: 1
+  callbacks:
+    - class_path: lightning.pytorch.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: "step"
+    - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+      init_args:
+        save_last: link
+        save_top_k: 2
+        every_n_epochs: 1
+        monitor: "val_loss_nologit"
+    - class_path: lightning.pytorch.callbacks.EarlyStopping
+      init_args:
+        monitor: "val_loss_withlogit"
+        min_delta: 0.001
+        patience: 1
+        verbose: true
+        mode: "min"
+  logger:
+    class_path: CustomWandbLogger
+    init_args:
+      project: "wandb-project-here"
+      entity: "wandb-entity-here"
+      save_dir: ${trainer.default_root_dir}
+  detect_anomaly: False
+model:
+  class_path: AstroClipModel
+  init_args:
+    image_encoder:
+      class_path: astroclip.models.astroclip.ImageHead
+      init_args:
+        model_name: swinv2
+        config: "astroclip/models/#model_here/config.yaml"
+        model_weights: "/workspace/astroclip/#model_path.pth"
+        save_directory: "/workspace/astroclip/results/"
+        model_embed_dim: 1024
+        freeze_backbone: true
+    spectrum_encoder:
+      class_path: astroclip.models.astroclip.SpectrumHead
+      init_args:
+        model_path: "/workspace/astroclip/specformer.ckpt"
+        freeze_backbone: true
+data:
+  class_path: AstroClipDataloader
+  init_args:
+    path: "/workspace/astroclip/data/legacy_desi_set/"
+    columns:
+      - image
+      - spectrum
+    batch_size: 1024
+    num_workers: 31
+    collate_fn:
+      class_path: astroclip.data.AstroClipCollator
+      init_args:
+        center_crop: 144
+optimizer:
+  class_path: torch.optim.adamw.AdamW
+  init_args:
+    lr: 1e-4
+    weight_decay: 0.05
+lr_scheduler:
+  class_path: astroclip.CosineAnnealingWithWarmupLR
+  init_args:
+    T_max: 10_000
+    T_warmup: 1_000
+    eta_min: ${eval:'${optimizer.init_args.lr}//100'}
