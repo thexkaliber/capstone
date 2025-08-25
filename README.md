@@ -1,5 +1,5 @@
 # Capstone: Physical Property Inference with Multi modal Analysis of Astronomical Data 
-<a href="https://huggingface.co/ekusu"><img src="assets/model-on-hf-sm.svg" alt="Model on Hugging Face" align="top"></a><a href="https://www.python.org/downloads/release/python-31018/"><img src="https://img.shields.io/badge/python-3.10-blue" alt="Python Version"></a><a href="https://pytorch.org/get-started/locally/"><img src="https://img.shields.io/badge/pytorch-2.0.0-orange?logo=pytorch" alt="Python Version"></a><a href="https://www.nvidia.com/en-us/drivers/"><img src="https://img.shields.io/badge/cuda-12.8-green?logo=nvidia" alt="CUDA Version"></a>
+<a href="https://huggingface.co/ekusu"><img src="assets/model-on-hf-sm.svg" alt="Model on Hugging Face" align="top"></a>&nbsp;<a href="https://www.python.org/downloads/release/python-31018/"><img src="https://img.shields.io/badge/python-3.10-blue" alt="Python Version"></a>&nbsp;<a href="https://pytorch.org/get-started/locally/"><img src="https://img.shields.io/badge/pytorch-2.0.0-orange?logo=pytorch" alt="Python Version"></a>&nbsp;<a href="https://www.nvidia.com/en-us/drivers/"><img src="https://img.shields.io/badge/cuda-12.8-green?logo=nvidia" alt="CUDA Version"></a>
 
 Capstone Research Project
 
